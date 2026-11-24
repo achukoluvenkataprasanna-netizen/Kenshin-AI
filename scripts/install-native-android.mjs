@@ -18,6 +18,9 @@ if (!strings.includes("kenshin_accessibility_description")) {
 }
 const manifestPath = path.join(app, "AndroidManifest.xml");
 let manifest = fs.readFileSync(manifestPath, "utf8");
+if (!manifest.includes("<queries>")) {
+  manifest = manifest.replace("<application", '    <queries><intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent></queries>\n    <application');
+}
 if (!manifest.includes("android.permission.RECORD_AUDIO")) {
   manifest = manifest.replace("<application", '    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <application');
 }
