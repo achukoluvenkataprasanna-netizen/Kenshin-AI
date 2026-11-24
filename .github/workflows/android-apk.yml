@@ -38,7 +38,8 @@ jobs:
       - name: Install JavaScript dependencies
         run: npm install
 
-      - name: Build web app\n        run: npm run build
+      - name: Build web app
+        run: npm run build
 
       - name: Generate Android project
         run: npx cap add android
