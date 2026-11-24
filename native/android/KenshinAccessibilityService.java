@@ -63,8 +63,25 @@ public class KenshinAccessibilityService extends AccessibilityService {
         if ("back".equals(action)) return performGlobalAction(GLOBAL_ACTION_BACK);
         if ("home".equals(action)) return performGlobalAction(GLOBAL_ACTION_HOME);
         if ("click_text".equals(action)) return clickText(getRootInActiveWindow(), target);
+        if ("launch_app".equals(action)) return launchApp(target);
         if ("scroll_forward".equals(action)) return scrollNode(getRootInActiveWindow(), AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
         if ("scroll_backward".equals(action)) return scrollNode(getRootInActiveWindow(), AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
+        return false;
+    }
+    private boolean launchApp(String query) {
+        if (query == null || query.trim().isEmpty()) return false;
+        android.content.pm.PackageManager pm = getPackageManager();
+        String wanted = query.trim().toLowerCase();
+        for (android.content.pm.ApplicationInfo app : pm.getInstalledApplications(android.content.pm.PackageManager.GET_META_DATA)) {
+            String label = pm.getApplicationLabel(app).toString().toLowerCase();
+            if (label.contains(wanted) || app.packageName.equalsIgnoreCase(wanted)) {
+                android.content.Intent intent = pm.getLaunchIntentForPackage(app.packageName);
+                if (intent != null) {
+                    intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try { startActivity(intent); return true; } catch (Exception ignored) { return false; }
+                }
+            }
+        }
         return false;
     }
     private boolean clickText(AccessibilityNodeInfo root, String target) {
