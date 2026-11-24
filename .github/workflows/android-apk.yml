@@ -47,6 +47,9 @@ jobs:
       - name: Sync Capacitor app
         run: npx cap sync android
 
+      - name: Install native Android voice and accessibility bridge
+        run: node scripts/install-native-android.mjs
+
       - name: Build debug APK
         working-directory: android
         run: |
