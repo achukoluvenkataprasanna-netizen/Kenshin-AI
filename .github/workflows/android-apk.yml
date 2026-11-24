@@ -16,6 +16,10 @@ on:
       - "index.html"
       - ".github/workflows/android-apk.yml"
 
+concurrency:
+  group: kenshin-android-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
