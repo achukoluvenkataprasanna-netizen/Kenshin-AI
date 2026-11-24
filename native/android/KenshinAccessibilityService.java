@@ -64,9 +64,25 @@ public class KenshinAccessibilityService extends AccessibilityService {
         if ("home".equals(action)) return performGlobalAction(GLOBAL_ACTION_HOME);
         if ("click_text".equals(action)) return clickText(getRootInActiveWindow(), target);
         if ("launch_app".equals(action)) return launchApp(target);
+        if ("type_text".equals(action)) return typeIntoFocusedField(target);
         if ("scroll_forward".equals(action)) return scrollNode(getRootInActiveWindow(), AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
         if ("scroll_backward".equals(action)) return scrollNode(getRootInActiveWindow(), AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
         return false;
+    }
+    private boolean typeIntoFocusedField(String text) {
+        if (text == null || text.isEmpty()) return false;
+        AccessibilityNodeInfo root = getRootInActiveWindow();
+        if (root == null) return false;
+        AccessibilityNodeInfo focused = root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT);
+        boolean result = false;
+        if (focused != null && focused.isEditable()) {
+            android.os.Bundle args = new android.os.Bundle();
+            args.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text);
+            result = focused.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args);
+            focused.recycle();
+        }
+        root.recycle();
+        return result;
     }
     private boolean launchApp(String query) {
         if (query == null || query.trim().isEmpty()) return false;
