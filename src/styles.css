@@ -68,3 +68,61 @@ body{background:#101010;color:#ececec}
 .api-group{background:#171717;border-color:#333}
 footer{border-color:#292929;color:#777}
 @media(max-width:600px){.shell.hud-shell{width:min(100% - 22px,900px)}.workspace{margin-top:18px}.tabs{gap:2px}.tabs button{font-size:10px;padding:8px 9px}.native-actions .secondary-btn{flex:1}.message{max-width:96%}.brain-controls{grid-template-columns:1fr;gap:6px}.brain-controls small{grid-column:1}.game-menu{grid-template-columns:1fr 1fr}}
+
+
+/* Gemini-inspired mobile HUD refresh — original Kenshin styling, not a pixel copy */
+:root{--hud-bg:#101116;--hud-panel:#1b1c22;--hud-muted:#a3a6b2;--hud-text:#e7e8ee;--hud-blue:#9ab7ff;--hud-violet:#c5a8ff}
+body{background:radial-gradient(ellipse at 14% 5%,#23335a55 0,transparent 32%),radial-gradient(ellipse at 88% 28%,#4c376233 0,transparent 34%),#101116;color:var(--hud-text)}
+.shell.hud-shell{width:min(100% - 24px,960px)}
+.topbar{height:66px;padding:0 4px;border:0;background:transparent}
+.brand{font-size:16px;font-weight:650;letter-spacing:.1px}
+.brand-mark{width:36px;height:36px;border:0;border-radius:13px;background:linear-gradient(140deg,#8ab4ff,#c5a8ff 55%,#f1a9d4);color:#161821;box-shadow:0 5px 22px #9ab7ff30}
+.topbar-model{padding:7px 12px;border:1px solid #ffffff18;border-radius:20px;background:#ffffff08;color:#c5c7d0}
+.github-link{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#ffffff0a;color:#c5c7d0}
+.app-subtitle{padding:3px 5px 9px;color:#9da1af}
+.tabs{position:sticky;top:0;z-index:12;padding:9px 2px 12px;margin:0 -2px;background:#101116dc;backdrop-filter:blur(18px);border:0;overflow-x:auto}
+.tabs button{border-radius:22px;padding:9px 14px;background:#ffffff08;border:1px solid #ffffff10;color:#c1c4cf;font-size:11px}
+.tabs button.selected{background:#dce6ff;color:#171b26;border-color:#dce6ff;box-shadow:0 4px 16px #9ab7ff22}
+.workspace{max-width:790px;margin:clamp(42px,9vh,92px) auto 0}
+.section-heading{margin-bottom:26px}
+.section-heading .kicker{color:#b6c7f6;letter-spacing:1.4px}
+.section-heading h2{font-size:clamp(30px,6vw,46px);font-weight:550;letter-spacing:-1.7px;line-height:1.12;margin:12px 0 0;background:linear-gradient(100deg,#f1f2f7 10%,#b9caff 58%,#d7baff);background-clip:text;-webkit-background-clip:text;color:transparent}
+.chat-head{border:0;padding:0 4px 15px}
+.chat-head .avatar{width:34px;height:34px;background:linear-gradient(145deg,#9ab7ff,#c7a9ff);color:#171b26;border-radius:13px}
+.chat-head b{font-size:13px}
+.chat-head small{color:#a2a5b1}
+.brain-controls{background:#1b1c22;border:1px solid #ffffff14;border-radius:20px;padding:15px;margin:14px 0 20px;box-shadow:0 12px 38px #0002}
+.brain-controls label{color:#bdc9e7}
+.brain-controls select,.brain-controls input{background:#121319;border:1px solid #ffffff16;border-radius:13px;padding:12px 14px}
+.messages{min-height:180px;padding:22px 5px;gap:22px}
+.message{font-size:14px;line-height:1.75}
+.message.user{background:#303542;border:1px solid #ffffff12;border-radius:20px 20px 6px 20px;padding:12px 16px}
+.game-card{background:linear-gradient(145deg,#20232d,#191b22);border:1px solid #ffffff16;border-radius:20px;box-shadow:0 10px 28px #0002}
+.voice-row{padding:0 2px;gap:8px}
+.secondary-btn,.primary-btn{border-radius:22px;background:#252832;border:1px solid #ffffff16;color:#e1e3eb;padding:10px 15px}
+.secondary-btn:hover,.tabs button:hover{border-color:#a9c2ff88;background:#303440}
+.primary-btn,.tabs button.selected{background:#dce6ff;color:#171b26;border-color:#dce6ff}
+.native-panel{background:#1a1c23;border:1px solid #ffffff14;border-radius:18px}
+.composer{position:sticky;bottom:max(10px,env(safe-area-inset-bottom));z-index:15;background:#252730;border:1px solid #ffffff1b;border-radius:30px;padding:8px 9px 8px 19px;box-shadow:0 12px 40px #0007;backdrop-filter:blur(20px)}
+.composer input{font-size:15px;padding:12px 4px}
+.composer input::placeholder{color:#a6a9b5}
+.composer button{width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#a9c5ff,#d2b5ff);color:#151925}
+.starter-prompts{justify-content:flex-start;gap:9px;padding:14px 2px 6px}
+.starter-prompts button{border-radius:22px;background:#1c1e26;border:1px solid #ffffff17;color:#c8cad3;padding:9px 13px}
+.feature-card,.tool-grid .feature-card{background:#1b1d25;border:1px solid #ffffff15;border-radius:18px}
+.settings-select,.settings-input,.tool-search,.roblox-panel select,.roblox-panel textarea{background:#171920;border-color:#ffffff1b;border-radius:13px}
+.api-group{background:#171920;border-color:#ffffff15;border-radius:13px}
+footer{margin-top:56px}
+@media(max-width:600px){
+ .shell.hud-shell{width:calc(100% - 24px)}
+ .topbar{height:60px}
+ .workspace{margin-top:clamp(34px,7vh,62px)}
+ .tabs{top:0}
+ .tabs button{padding:8px 11px}
+ .section-heading{margin-bottom:22px}
+ .section-heading h2{letter-spacing:-1.2px}
+ .brain-controls{padding:13px;border-radius:17px}
+ .composer{bottom:max(8px,env(safe-area-inset-bottom))}
+ .starter-prompts{overflow-x:auto;flex-wrap:nowrap}
+ .starter-prompts button{flex:0 0 auto}
+}
