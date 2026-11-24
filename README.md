@@ -1,20 +1,19 @@
 # KENSHIN-AI
 
-A mobile-first personal AI assistant, powered by Gemini through a private backend.
+A mobile-first personal AI assistant, powered by models available through OpenRouter and a private FastAPI backend.
 
 ## What works in this version
 - Responsive React + TypeScript + Vite interface.
-- FastAPI backend with a Gemini chat endpoint.
+- FastAPI backend connected to OpenRouter's OpenAI-compatible chat completions API.
+- Selectable model through the `OPENROUTER_MODEL` environment variable.
 - Conversation context is sent with each chat request.
-- Health endpoint reports whether the backend has an AI key configured.
+- Health endpoint reports whether the backend has an API key configured.
 - API keys are read only from backend environment variables; never commit secrets.
 
 ## Activate live AI
 
-### 1. Get a Gemini API key
-Create a key in Google AI Studio: https://aistudio.google.com/app/apikey
-
-Keep the key private. Do not paste it into frontend code, GitHub files, or public chats.
+### 1. Create an OpenRouter API key
+Visit https://openrouter.ai/keys and create a key. Set a spending limit on the key. OpenRouter offers some free models, but free model availability, rate limits, and quality can vary.
 
 ### 2. Run the backend locally
 Requires Python 3.11+.
@@ -27,11 +26,11 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Set `GEMINI_API_KEY` in your shell or in a local `.env` file (the .gitignore excludes env files). Example:
+Set these environment variables in your shell or in a local `.env` file (the .gitignore excludes env files):
 
 ```bash
-GEMINI_API_KEY=your_private_key
-GEMINI_MODEL=gemini-2.5-flash
+OPENROUTER_API_KEY=your_private_key
+OPENROUTER_MODEL=openrouter/free
 FRONTEND_ORIGINS=http://localhost:5173
 uvicorn main:app --reload --port 8000
 ```
@@ -46,12 +45,13 @@ npm install
 npm run dev
 ```
 
-Vite proxies `/api` and `/health` to the local backend. Open the URL Vite prints.
+Open the URL Vite prints. The Vite development server proxies API requests to the local backend.
 
 ## Deploy the backend
-A Render blueprint is included in `render.yaml`. Create a new Render Web Service from this repository and set the secret environment variable `GEMINI_API_KEY` in Render's dashboard. Set `FRONTEND_ORIGINS` to the exact deployed frontend origin (no trailing slash). Set the frontend's `VITE_API_BASE_URL` to the backend URL and redeploy the frontend.
+A Render blueprint is included in `render.yaml`. Create a new Render Web Service from this repository and add `OPENROUTER_API_KEY` as a secret in the Render dashboard. Set `OPENROUTER_MODEL` to a model slug available in your OpenRouter account. Set `FRONTEND_ORIGINS` to the exact deployed frontend origin (no trailing slash). Set the frontend's `VITE_API_BASE_URL` to the backend URL and redeploy the frontend.
 
-Do not commit real keys. If a key is exposed, revoke it and create a new one.
+## Security
+**Never put an OpenRouter API key in this public GitHub repository, frontend JavaScript, a mobile APK, or a chat message.** A key can spend your account credits. Keep it only in backend environment secrets. If exposed, revoke it immediately and create a replacement. Use a spending limit and add authentication and rate limiting before making the backend public.
 
 ## Roadmap
 1. Add voice input and speech output.
@@ -62,4 +62,4 @@ Do not commit real keys. If a key is exposed, revoke it and create a new one.
 Roblox-related features must use documented, authorized interfaces and must not exploit games, bypass anti-cheat, or automate unauthorized public-server activity.
 
 ## Current limitations
-The backend is a first AI integration, not an autonomous agent. It has no external tools, persistent memory, account connectors, or Android APK yet. Add production rate limiting, authentication, monitoring, and usage controls before opening the API to the public.
+This is a first AI integration, not an autonomous agent. It has no external tools, persistent memory, account connectors, or Android APK yet.
