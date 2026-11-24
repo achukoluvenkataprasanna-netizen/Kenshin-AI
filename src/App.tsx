@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Activity, Bot, Gamepad2, Github, LoaderCircle, Send, ShieldCheck, Sparkles, Wifi, Mic, MicOff, Volume2, VolumeX, RotateCcw, Crown, Puzzle } from "lucide-react";
 
 type Provider = "openrouter" | "ollama_cloud" | "ollama_local";
-type Message = { role: "assistant" | "user"; text: string };
+type Message = { role: "assistant" | "user"; text: string };\ntype ProviderMessage = { role: "system" | "assistant" | "user"; content: string };
 type SpeechRecognitionResultLike = { [index: number]: { transcript: string } };
 type SpeechRecognitionLike = { lang: string; interimResults: boolean; onresult: ((event: { results: SpeechRecognitionResultLike[] }) => void) | null; onerror: (() => void) | null; onend: (() => void) | null; start: () => void; stop: () => void };
 type WindowWithSpeech = Window & { SpeechRecognition?: new () => SpeechRecognitionLike; webkitSpeechRecognition?: new () => SpeechRecognitionLike };
@@ -17,7 +17,7 @@ const starterPrompts = [
   "Teach me a chess opening for beginners",
 ];
 
-function directChat(provider: Provider, key: string, localUrl: string, model: string, messages: Message[]) {
+function directChat(provider: Provider, key: string, localUrl: string, model: string, messages: ProviderMessage[]) {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   let url = "";
   let body: Record<string, unknown>;
@@ -119,7 +119,7 @@ export default function App() {
     const nextMessages = [...messages, { role: "user" as const, text: value }];
     setMessages(nextMessages); setMessage(""); setBusy(true);
     try {
-      const history = nextMessages.slice(-12).map(item => ({ role: item.role, content: item.text }));
+      const history: ProviderMessage[] = [{ role: "system", content: "You are Kenshin, a capable, honest, safety-conscious AI assistant. Be clear and useful. Think through complex tasks, break them into steps, verify claims when tools are available, state uncertainty, and never claim abilities or actions you do not have. You are not superintelligent and must not claim to be. Protect privacy and refuse harmful or unauthorized activity." }, ...nextMessages.slice(-12).map(item => ({ role: item.role, content: item.text }))];
       let reply: string;
       if (API_BASE) {
         const response = await fetch(`${API_BASE}/api/chat`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ provider, model: model.trim(), messages: history }) });
