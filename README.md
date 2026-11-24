@@ -71,3 +71,8 @@ KENSHIN-AI is not artificial superintelligence. It is a software assistant that 
 ## Privacy and safety
 
 API keys saved in the Android app use Android Keystore-backed encryption through the secure-storage plugin. Local notes still use WebView storage and are not encrypted. Cloud providers receive prompts sent to them under their own terms. Never save passwords or highly sensitive information in notes or chat.
+
+
+## Safer Android sideload build
+
+The default GitHub Actions APK build intentionally omits the Android Accessibility Service declaration and broad installed-app visibility declaration. It retains the native microphone speech input and Android text-to-speech bridge. Cross-app screen reading, accessibility actions, and launching arbitrary installed apps are not included in this safer sideload build. This is intended to reduce sensitive permission exposure during installation; it is not a guarantee that Play Protect will approve the APK. Do not disable Play Protect to install it.
