@@ -18,17 +18,12 @@ if (!strings.includes("kenshin_accessibility_description")) {
 }
 const manifestPath = path.join(app, "AndroidManifest.xml");
 let manifest = fs.readFileSync(manifestPath, "utf8");
-if (!manifest.includes("<queries>")) {
-  manifest = manifest.replace("<application", '    <queries><intent><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent></queries>\n    <application');
-}
-if (!manifest.includes("android.permission.RECORD_AUDIO")) {
-  manifest = manifest.replace("<application", '    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <application');
-}
-if (!manifest.includes("KenshinAccessibilityService")) {
-  const service = '        <service android:name="com.kenshin.ai.KenshinAccessibilityService" android:label="Kenshin screen assistant" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" android:exported="true"><intent-filter><action android:name="android.accessibilityservice.AccessibilityService" /></intent-filter><meta-data android:name="android.accessibilityservice" android:resource="@xml/kenshin_accessibility_service" /></service>\n';
-  manifest = manifest.replace("</application>", service + "</application>");
-}
+// Safer sideload build: request microphone access only. Do not declare an
+// AccessibilityService or broad installed-app visibility in this APK.
+manifest = manifest.replace(/\s*<queries>[\s\S]*?<\/queries>\s*/g, "\n");
+manifest = manifest.replace(/\s*<service[^>]*KenshinAccessibilityService[\s\S]*?<\/service>\s*/g, "\n");
 fs.writeFileSync(manifestPath, manifest);
+
 const activityPath = path.join(javaDir, "MainActivity.java");
 if (!fs.existsSync(activityPath)) {
   fs.writeFileSync(activityPath, "package com.kenshin.ai;\nimport android.os.Bundle;\nimport com.getcapacitor.BridgeActivity;\npublic class MainActivity extends BridgeActivity {\n  @Override public void onCreate(Bundle savedInstanceState) {\n    registerPlugin(KenshinNativePlugin.class);\n    super.onCreate(savedInstanceState);\n  }\n}\n");
@@ -40,4 +35,4 @@ if (!fs.existsSync(activityPath)) {
     fs.writeFileSync(activityPath, activity);
   }
 }
-console.log("Installed Kenshin native voice and accessibility bridge.");
+console.log("Installed Kenshin native voice bridge. Accessibility service intentionally omitted from safer sideload APK.");
