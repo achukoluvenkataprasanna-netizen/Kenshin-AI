@@ -79,13 +79,13 @@ export default function App() {
     <section className="workspace">
       <div className="section-heading"><div><span className="kicker">01 / ASSISTANT</span><h2>Talk to Kenshin</h2></div><span className={`demo-tag ${aiReady ? "ready-tag" : ""}`}>{aiReady ? "AI READY" : "SETUP REQUIRED"}</span></div>
       <div className="chat-panel">
-        <div className="chat-head"><span className="avatar"><Sparkles size={17}/></span><div><b>Kenshin</b><small>Gemini AI · Secure backend</small></div><span className={`online ${aiReady ? "" : "offline"}`}>● {aiReady ? "Ready" : "Setup"}</span></div>
+        <div className="chat-head"><span className="avatar"><Sparkles size={17}/></span><div><b>Kenshin</b><small>OpenRouter AI · Secure backend</small></div><span className={`online ${aiReady ? "" : "offline"}`}>● {aiReady ? "Ready" : "Setup"}</span></div>
         <div className="messages" aria-live="polite">{messages.map((item, index) => <div className={`message ${item.role}`} key={index}>{item.text}</div>)}{busy && <div className="message assistant typing"><LoaderCircle size={15}/> Kenshin is thinking…</div>}</div>
         <form className="composer" onSubmit={(event) => { event.preventDefault(); void sendMessage(); }}>
           <input value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Ask Kenshin anything..." aria-label="Message Kenshin" disabled={busy}/>
           <button type="submit" aria-label="Send message" disabled={!message.trim() || busy}><Send size={18}/></button>
         </form>
-        <p className="disclaimer">{busy ? "Generating a response…" : aiReady ? "Connected to Gemini through the secure backend" : "Add a Gemini API key and deploy the backend to activate live answers"}</p>
+        <p className="disclaimer">{busy ? "Generating a response…" : aiReady ? "Connected to Gemini through the secure backend" : "Add an OpenRouter API key and deploy the backend to activate live answers"}</p>
       </div>
     </section>
 
