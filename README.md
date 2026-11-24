@@ -38,6 +38,9 @@ Open **Settings**, choose a provider/service, enter its API key and save it on t
 
 Saving an integration key only stores the credential. It does **not** automatically implement that provider's API adapter. Many services require OAuth, scopes, account setup, server-side proxying, rate-limit handling and their own connector code. Current live integrations are listed above; the rest are planned catalogue entries.
 
+
+**Accessibility service note:** Android starts an accessibility service only after the user explicitly enables it in device settings. This repository's service is a personal prototype for user-requested screen reading and voice-controlled interaction. Android's guidance reserves accessibility services for assistive uses; review current Android and Google Play policies before distributing this feature publicly. The current build is a sideloaded debug prototype, not Play Store certified.
+
 ## Ollama and offline models
 
 Ollama Cloud and a remote/local-network Ollama server can be selected as providers. A full Ollama daemon and large model weights are not bundled in this APK. A true offline Android model needs a native inference runtime (for example llama.cpp), a device-compatible quantized GGUF model download, RAM/storage checks and model lifecycle controls. This is a separate native Android milestone.
