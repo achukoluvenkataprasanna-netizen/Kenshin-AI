@@ -1,93 +1,47 @@
 # KENSHIN-AI
 
-A mobile-first AI assistant with three selectable AI routes and an Android APK build workflow.
+A mobile-first personal assistant with OpenRouter and Ollama provider choices, voice controls, mini-games, a Roblox fair-play guide, and an Android APK workflow.
 
-## AI brains
+## Build and install the APK using only your Android phone
 
-- **OpenRouter:** OpenAI-compatible hosted model gateway. Configure `OPENROUTER_API_KEY` and `OPENROUTER_MODEL`.
-- **Ollama Cloud:** Hosted Ollama models. Configure `OLLAMA_API_KEY` and `OLLAMA_CLOUD_MODEL`. The default example is `gemma4:31b`.
-- **Ollama Local:** A model served by an Ollama installation. Configure `OLLAMA_LOCAL_BASE_URL` and `OLLAMA_LOCAL_MODEL`. The default example is `gemma4:e2b`; pull that model on the Ollama host first.
+No Render account, computer, Android Studio, or local build is required. GitHub Actions builds the Android APK in the cloud.
 
-The app lets the user choose a provider and enter a model name. Provider credentials are only read by the backend and are never sent to the Android app.
+1. Open [KENSHIN-AI on GitHub](https://github.com/achukoluvenkataprasanna-netizen/Kenshin-AI).
+2. Tap **Actions**.
+3. Choose **Build Kenshin Android APK**.
+4. Tap **Run workflow**, then confirm **Run workflow**.
+5. Open the newest run and wait for the green check mark.
+6. Under **Artifacts**, download **kenshin-ai-debug-apk**.
+7. Open the ZIP in your Android Downloads folder, extract it, tap `app-debug.apk`, and approve Android's install-from-this-source prompt if asked.
 
-## Backend environment
+If GitHub says Actions are disabled, open **Actions** in the repository and enable workflows. If the build fails, open the run and share the error text; do not share any API key.
 
-Copy `backend/.env.example` into your private local environment and fill in the keys. Never commit real API keys.
+## AI brains without Render
 
-Run the backend:
+The app can make direct requests from the phone to:
+- **OpenRouter** — choose a model available to your account.
+- **Ollama Cloud** — requires an Ollama API key and a cloud model available to your account.
 
-```bash
-cd backend
-python -m venv .venv
-# Windows: .venv\\Scripts\\activate
-# macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
-```
+Enter your own key in the app's password field. The current app keeps it in memory only; it is not written into this public repository. Never paste a key into GitHub source files or a chat. Direct requests may be blocked by a provider's browser CORS policy; if that happens, a private backend/proxy is needed for reliable access. Provider usage may cost money.
 
-Run the frontend in another terminal:
+**Ollama Local:** This requires an Ollama server on another computer/device reachable over your network. Ollama's normal local server is not an Android app service, and `127.0.0.1` on the phone means the phone itself. With only this Android phone, use Ollama Cloud or OpenRouter.
 
-```bash
-npm install
-npm run dev
-```
+## Current app modules
 
-Vite proxies `/api` and `/health` to the local backend.
+- AI chat with provider/model selection and optional voice input/output (speech support depends on Android WebView and microphone permission).
+- Tic-tac-toe and memory-match mini-games.
+- Roblox guide prompts for Brookhaven RP, Blox Fruits, Adopt Me!, 99 Nights in the Forest, Tower of Hell, Murder Mystery 2, Piggy, Royale High, Pet Simulator X, and Welcome to Bloxburg.
+- API hub roadmap for weather, maps/transit, news, finance/crypto, developer tools, books/anime/games, email/calendar, science and open datasets.
 
-## Ollama Local networking note
+Chess lessons can be requested from Kenshin; a playable chessboard and the external API connectors are not yet implemented. The Roblox companion provides fair-play advice only; no cheats, exploits, anti-cheat bypasses, account theft, or unauthorized public-server bots.
 
-`OLLAMA_LOCAL_BASE_URL` is resolved from the backend machine, not the Android phone. If the backend runs on Render, `127.0.0.1` points to the Render container and will not reach a computer at home. To use a local Ollama server, run the backend on the same computer/network as Ollama or connect them through a properly secured private network/tunnel. Do not expose Ollama's unauthenticated local port directly to the public internet.
+## Security and privacy
 
-## Deploy the backend
+- API keys are not embedded in the APK or committed to GitHub.
+- The direct phone mode holds the key in app memory for the current session. Treat the phone as sensitive and revoke the key if the device is lost.
+- For stronger security, use a private backend that stores provider keys server-side and add authentication/rate limits before exposing it publicly.
+- Cloud AI providers process prompts to generate answers; review their current privacy and billing terms before use.
 
-Create a Render Web Service from this repository using the included `render.yaml`. Add these secrets in the Render dashboard as needed:
+## Development
 
-- `OPENROUTER_API_KEY`
-- `OLLAMA_API_KEY`
-
-Set `FRONTEND_ORIGINS` to the deployed web origin plus `https://localhost` for the Capacitor Android WebView. Set the frontend `VITE_API_BASE_URL` to the backend URL and rebuild the Android app after changing it.
-
-For local Ollama with a hosted backend, configure `OLLAMA_LOCAL_BASE_URL` to a private, authenticated/restricted route reachable from that backend. The sample loopback address is only suitable when the backend and Ollama run on the same machine.
-
-
-### Configure the APK backend URL
-
-Before running the Android workflow, add a repository Actions variable:
-
-1. Open **Settings > Secrets and variables > Actions > Variables**.
-2. Choose **New repository variable**.
-3. Name it `VITE_API_BASE_URL`.
-4. Set its value to your deployed HTTPS backend URL, for example `https://your-kenshin-api.onrender.com` (use your actual Render service URL).
-5. Save, then run the Android APK workflow again.
-
-This URL is public configuration, not a secret. Do not put provider API keys in this variable.
-
-## Android APK
-
-This repository includes Capacitor Android configuration and a GitHub Actions workflow at `.github/workflows/android-apk.yml`.
-
-1. Open the repository on GitHub and select **Actions**.
-2. Choose **Build Kenshin Android APK**.
-3. Tap **Run workflow** (or wait for a build after a relevant push).
-4. Open the completed workflow run and download the `kenshin-ai-debug-apk` artifact.
-5. Extract the ZIP and install `app-debug.apk` on your Android device. Android may ask you to allow installation from that source.
-
-For a local build, install Node.js, Android Studio and the Android SDK, then run:
-
-```bash
-npm install
-npm run cap:sync
-npx cap open android
-```
-
-In Android Studio, build the APK from **Build > Build Bundle(s) / APK(s) > Build APK(s)**. A release/Play Store build needs a separately configured signing key; never commit that key.
-
-## Security
-
-Never put OpenRouter or Ollama API keys in this public repository, frontend JavaScript, an APK, or a chat message. Store them only as backend environment secrets. Revoke and replace any key that is exposed. Add authentication and rate limiting before making a personal backend publicly accessible.
-
-## Current limitations
-
-The Android APK workflow creates a debug APK artifact; it does not sign a production release. The backend must be deployed and configured before hosted AI works. Ollama Local only works when the backend can reach the Ollama host. Voice, chess, games and external connectors remain future modules.
-
-Roblox-related features must use documented, authorized interfaces and must not exploit games, bypass anti-cheat, or automate unauthorized public-server activity.
+The project uses React, TypeScript, Vite and Capacitor. For local development, install Node.js and run `npm install`, `npm run dev`. A production Android release needs a signing key; the workflow produces a debug APK for personal testing.
