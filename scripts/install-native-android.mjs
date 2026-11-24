@@ -6,7 +6,7 @@ const javaDir = path.join(app, "java/com/kenshin/ai");
 const resDir = path.join(app, "res/xml");
 fs.mkdirSync(javaDir, { recursive: true });
 fs.mkdirSync(resDir, { recursive: true });
-for (const file of ["KenshinNativePlugin.kt", "KenshinAccessibilityService.kt"]) {
+for (const file of ["KenshinNativePlugin.java", "KenshinAccessibilityService.java"]) {
   fs.copyFileSync(path.join(root, "native/android", file), path.join(javaDir, file));
 }
 fs.copyFileSync(path.join(root, "native/android/accessibility_service_config.xml"), path.join(resDir, "kenshin_accessibility_service.xml"));
