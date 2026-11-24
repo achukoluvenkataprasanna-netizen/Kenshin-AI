@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Activity, Bot, Gamepad2, Github, LoaderCircle, Send, ShieldCheck, Sparkles, Wifi, Mic, MicOff, Volume2, VolumeX, RotateCcw, Crown, Puzzle } from "lucide-react";
 
 type Provider = "openrouter" | "ollama_cloud" | "ollama_local";
-type Message = { role: "assistant" | "user"; text: string };\ntype ProviderMessage = { role: "system" | "assistant" | "user"; content: string };
+type Message = { role: "assistant" | "user"; text: string };
+type ProviderMessage = { role: "system" | "assistant" | "user"; content: string };
 type SpeechRecognitionResultLike = { [index: number]: { transcript: string } };
 type SpeechRecognitionLike = { lang: string; interimResults: boolean; onresult: ((event: { results: SpeechRecognitionResultLike[] }) => void) | null; onerror: (() => void) | null; onend: (() => void) | null; start: () => void; stop: () => void };
 type WindowWithSpeech = Window & { SpeechRecognition?: new () => SpeechRecognitionLike; webkitSpeechRecognition?: new () => SpeechRecognitionLike };
