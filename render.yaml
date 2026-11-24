@@ -11,7 +11,15 @@ services:
         sync: false
       - key: OPENROUTER_MODEL
         value: openrouter/free
+      - key: OLLAMA_API_KEY
+        sync: false
+      - key: OLLAMA_CLOUD_MODEL
+        value: gemma4:31b
+      - key: OLLAMA_LOCAL_BASE_URL
+        value: http://127.0.0.1:11434
+      - key: OLLAMA_LOCAL_MODEL
+        value: gemma4:e2b
       - key: OPENROUTER_APP_NAME
         value: Kenshin AI
       - key: FRONTEND_ORIGINS
-        value: https://YOUR-FRONTEND-DOMAIN
+        value: https://YOUR-FRONTEND-DOMAIN,https://localhost
