@@ -16,11 +16,12 @@ No Render service or computer is required for the GitHub Actions APK build.
 ## Current app features
 
 - OpenRouter, Google Gemini API, Ollama Cloud and Ollama Local provider choices.
-- Speech input and spoken responses where Android WebView/browser speech support is available.
+- Native Android speech-to-text using Android's speech recognizer and native text-to-speech; web speech fallback in browser preview.
+- Permission-controlled Android Accessibility bridge: user-enabled service, on-demand visible UI text extraction, and explicit-confirmation Back/Home/scroll/click-by-text actions. No background screen monitoring.
 - Playable chess, tic-tac-toe, memory match, rock-paper-scissors, number guessing and a no-timer 2D grid escape puzzle.
-- Ask in chat to play supported games; the game appears as an interactive card in the conversation.
+- Ask in chat to play supported games; the game appears as an interactive card in the conversation. There is no separate Games tab in the chat-first interface.
 - Roblox companion links and fair-play tips for Brookhaven RP, Blox Fruits, Adopt Me!, 99 Nights in the Forest, Tower of Hell, Murder Mystery 2, Piggy, Royale High, Pet Simulator X and Welcome to Bloxburg.
-- Public-data utilities: Open-Meteo weather, GDELT news search, CoinGecko prices, Open Library, Jikan anime, TheMealDB recipes, Dog CEO and NASA APOD.
+- Public-data utilities: Open-Meteo weather, GDELT news search, CoinGecko prices, Open Library, Jikan anime, TheMealDB recipes, Dog CEO, NASA APOD, public GitHub repository search, Wikipedia, PokéAPI, SpaceX latest launch, Frankfurter exchange rates, OpenFDA labels, arXiv search and Open Food Facts.
 - Maps, GitHub, Gmail and Calendar shortcuts.
 - Local personal notes.
 - API integration directory covering development/cloud, finance, weather, maps/transport, entertainment/games, news/books/open data, business/email, science/space, animals and food.
@@ -45,18 +46,22 @@ Ollama Cloud and a remote/local-network Ollama server can be selected as provide
 
 Kenshin opens official Roblox discovery pages and provides fair-play guidance. It does not play Roblox for you, automate public servers, exploit games, bypass anti-cheat or access your Roblox account. In-game vision/control would require a carefully scoped, user-enabled native accessibility or screen-capture implementation; support differs by app and game.
 
-Native phone actions must be user-visible, permission-based and confirm sensitive actions. Android accessibility services can inspect UI hierarchy or dispatch gestures only when declared and explicitly enabled by the user; this app does not yet include a full accessibility agent.
+Native phone actions must be user-visible, permission-based and confirmed. The native service reads accessibility-node text only when the user taps Read current screen. It does not capture screenshots, perform OCR, watch the screen in the background, type arbitrary text, or control arbitrary apps. Actions currently supported are Back, Home, scroll, and click a visible control by its text. Android Settings requires the user to enable the service manually. Some apps hide their UI from accessibility services.
 
 ## Still planned
 
-- Native floating overlay above other apps, accessibility agent, OCR/screen understanding and user-confirmed actions.
-- Full duplex voice conversation, wake word, background voice and interruptible speech.
+- Native floating overlay above other apps, screenshot-based OCR/visual understanding, and more accessibility actions (the current screen bridge reads accessible text only).
+- Full-duplex voice conversation, wake word, background voice and interruptible speech (current native voice uses Android's speech-recognition UI and TTS).
 - Downloadable on-device GGUF model runtime.
 - Remaining API adapters and OAuth integrations from the catalogue.
 - Direct authenticated GitHub, Drive, GitLab, Cloudflare, email and calendar actions.
 - Additional in-chat games, card games and generated game templates.
 - Searchable encrypted chat history, long-term AI memory, scheduled routines and agent/skill marketplace.
 - Production-signed release APK; current workflow builds a debug APK for personal testing.
+
+The native Android bridge is installed by `scripts/install-native-android.mjs` during the GitHub Actions build, after Capacitor generates the Android project. It is not a silent remote-control agent: screen reads and actions are user-initiated, and every action requires confirmation.
+
+OpenJarvis is used as an architectural reference for a modular agent, tool and skill system. Kenshin does not yet contain OpenJarvis's full multi-agent runtime, memory graph, MCP support, continuous agents or skill marketplace. Those require a backend/tool-execution layer and further Android work.
 
 KENSHIN-AI is not artificial superintelligence. It is a software assistant that uses selected external or local models and explicitly implemented tools. Features should be considered complete only after they build and work on a real Android device.
 
