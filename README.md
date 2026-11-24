@@ -46,7 +46,7 @@ Ollama Cloud and a remote/local-network Ollama server can be selected as provide
 
 Kenshin opens official Roblox discovery pages and provides fair-play guidance. It does not play Roblox for you, automate public servers, exploit games, bypass anti-cheat or access your Roblox account. In-game vision/control would require a carefully scoped, user-enabled native accessibility or screen-capture implementation; support differs by app and game.
 
-Native phone actions must be user-visible, permission-based and confirmed. The native service reads accessibility-node text only when the user taps Read current screen. It does not capture screenshots, perform OCR, watch the screen in the background, type arbitrary text, or control arbitrary apps. Actions currently supported are Back, Home, scroll, and click a visible control by its text. Android Settings requires the user to enable the service manually. Some apps hide their UI from accessibility services.
+Native phone actions must be user-visible, permission-based and confirmed. The native service reads accessibility-node text only when the user taps Read current screen. It does not capture screenshots or perform OCR, and it does not watch the screen in the background. Text entry is limited to the currently focused editable field and requires an explicit confirmation. Actions currently supported are Back, Home, scroll, launch an installed app by name, click a visible control by its text, and type into the currently focused editable field. Each action must be explicitly approved in the chat action card. Android Settings requires the user to enable the service manually. Some apps hide their UI from accessibility services.
 
 ## Still planned
 
