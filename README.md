@@ -1,47 +1,58 @@
 # KENSHIN-AI
 
-A mobile-first personal assistant with OpenRouter and Ollama provider choices, voice controls, mini-games, a Roblox fair-play guide, and an Android APK workflow.
+KENSHIN-AI is an Android-first assistant prototype with a cinematic in-app HUD, multi-provider chat, voice controls, games, Roblox launching/guidance, local notes, and public-data utilities.
 
-## Build and install the APK using only your Android phone
+## Build and install on an Android phone
 
-No Render account, computer, Android Studio, or local build is required. GitHub Actions builds the Android APK in the cloud.
+No Render account or computer is required. GitHub Actions builds the debug APK in the cloud.
 
 1. Open [KENSHIN-AI on GitHub](https://github.com/achukoluvenkataprasanna-netizen/Kenshin-AI).
-2. Tap **Actions**.
-3. Choose **Build Kenshin Android APK**.
-4. Tap **Run workflow**, then confirm **Run workflow**.
-5. Open the newest run and wait for the green check mark.
-6. Under **Artifacts**, download **kenshin-ai-debug-apk**.
-7. Open the ZIP in your Android Downloads folder, extract it, tap `app-debug.apk`, and approve Android's install-from-this-source prompt if asked.
+2. Tap **Actions** → **Build Kenshin Android APK** → **Run workflow**.
+3. Open the newest run and wait for a green check mark.
+4. Download the `kenshin-ai-debug-apk` artifact ZIP.
+5. Extract `app-debug.apk` from Downloads and tap it to install.
+6. If Android asks, allow your browser/file manager to install unknown apps. Only install APKs from this repository's successful workflow.
 
-If GitHub says Actions are disabled, open **Actions** in the repository and enable workflows. If the build fails, open the run and share the error text; do not share any API key.
+## Implemented in this iteration
 
-## AI brains without Render
+- In-app animated HUD inspired by futuristic assistant interfaces.
+- Direct model choices: OpenRouter, Google Gemini API, Ollama Cloud, and Ollama Local on another reachable device.
+- Voice input and spoken replies where Android WebView/browser speech APIs support them.
+- Playable local chess with legal move validation, check/checkmate/draw detection, undo, and queen promotion.
+- Tic-tac-toe, memory matching, rock-paper-scissors, and number guessing.
+- Roblox companion for Brookhaven RP, Blox Fruits, Adopt Me!, 99 Nights in the Forest, Tower of Hell, Murder Mystery 2, Piggy, Royale High, Pet Simulator X, and Welcome to Bloxburg. It opens Roblox's official discovery search and can answer fair-play questions.
+- Public-data utilities: current weather using phone location (Open-Meteo), news search (GDELT), BTC/ETH/DOGE price lookup (CoinGecko), books (Open Library), anime metadata (Jikan), recipes (TheMealDB), a random dog image (Dog CEO), and NASA Astronomy Picture of the Day.
+- Maps, GitHub, Gmail and Calendar shortcuts.
+- User-created personal notes stored in this app's local WebView storage.
 
-The app can make direct requests from the phone to:
-- **OpenRouter** — choose a model available to your account.
-- **Ollama Cloud** — requires an Ollama API key and a cloud model available to your account.
+## AI provider setup
 
-Enter your own key in the app's password field. The current app keeps it in memory only; it is not written into this public repository. Never paste a key into GitHub source files or a chat. Direct requests may be blocked by a provider's browser CORS policy; if that happens, a private backend/proxy is needed for reliable access. Provider usage may cost money.
+Select a provider and enter your own API key in the password field inside the app. The key remains in app memory for the current session and is not committed to this public repository. Provider requests may be blocked by browser/WebView CORS rules or provider policies. If so, a private authenticated backend proxy is needed. Usage may incur provider charges.
 
-**Ollama Local:** This requires an Ollama server on another computer/device reachable over your network. Ollama's normal local server is not an Android app service, and `127.0.0.1` on the phone means the phone itself. With only this Android phone, use Ollama Cloud or OpenRouter.
+- Gemini: Google AI Studio API key; default model is `gemini-2.5-flash`.
+- OpenRouter: OpenRouter API key; default model is `openrouter/free`.
+- Ollama Cloud: Ollama API key and a cloud model enabled for your account.
+- Ollama Local: requires an Ollama server on another device. On Android, `127.0.0.1` points to the phone, not a remote computer. Do not expose Ollama's unauthenticated port publicly.
 
-## Current app modules
+Never put API keys in source code, GitHub commits, screenshots, or chat messages.
 
-- AI chat with provider/model selection and optional voice input/output (speech support depends on Android WebView and microphone permission).
-- Tic-tac-toe and memory-match mini-games.
-- Roblox guide prompts for Brookhaven RP, Blox Fruits, Adopt Me!, 99 Nights in the Forest, Tower of Hell, Murder Mystery 2, Piggy, Royale High, Pet Simulator X, and Welcome to Bloxburg.
-- API hub roadmap for weather, maps/transit, news, finance/crypto, developer tools, books/anime/games, email/calendar, science and open datasets.
+## Roblox and Android control limits
 
-Chess lessons can be requested from Kenshin; a playable chessboard and the external API connectors are not yet implemented. The Roblox companion provides fair-play advice only; no cheats, exploits, anti-cheat bypasses, account theft, or unauthorized public-server bots.
+Kenshin can open the official Roblox discovery page and provide game advice. It does not control gameplay, automate public servers, exploit games, bypass anti-cheat, or interact with Roblox accounts. A companion overlay or screen-reading/accessibility agent requires a separate native Android implementation, explicit Android permissions, and careful confirmation gates; the current Capacitor app does not provide those system-level powers.
 
-## Security and privacy
+## Not implemented yet
 
-- API keys are not embedded in the APK or committed to GitHub.
-- The direct phone mode holds the key in app memory for the current session. Treat the phone as sensitive and revoke the key if the device is lost.
-- For stronger security, use a private backend that stores provider keys server-side and add authentication/rate limits before exposing it publicly.
-- Cloud AI providers process prompts to generate answers; review their current privacy and billing terms before use.
+- Persistent voice wake word, background listening, full duplex live voice, and interruptible speech.
+- Native Android overlay/HUD above other apps, accessibility service, OCR/screen vision, notification reading, clipboard access, or app chaining.
+- Long-term AI memory graph, searchable chat history, cloud sync, autonomous agents, skill/MCP marketplace, scheduler and reminders.
+- Direct Roblox in-game control or playing Roblox on the user's behalf.
+- Email/calendar OAuth and inbox/event access; current links only open the official services.
+- Full maps/transit routing, live sports, broader finance, and authenticated private account integrations.
+- Image understanding/generation, file uploads, and web browsing with citations inside the app.
+- A production-signed APK; GitHub workflow creates a debug APK for personal testing.
 
-## Development
+These are real engineering milestones, not features that can be switched on by changing the app's appearance. The app is not artificial superintelligence; it uses the selected external model and the tools explicitly integrated here.
 
-The project uses React, TypeScript, Vite and Capacitor. For local development, install Node.js and run `npm install`, `npm run dev`. A production Android release needs a signing key; the workflow produces a debug APK for personal testing.
+## Privacy
+
+Local notes are stored in Android WebView app storage. They are not encrypted and can be lost if app data is cleared. Do not save passwords, API keys, or sensitive information. Cloud AI providers receive prompts sent to them; review their privacy and billing terms.
