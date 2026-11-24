@@ -49,6 +49,19 @@ Set `FRONTEND_ORIGINS` to the deployed web origin plus `https://localhost` for t
 
 For local Ollama with a hosted backend, configure `OLLAMA_LOCAL_BASE_URL` to a private, authenticated/restricted route reachable from that backend. The sample loopback address is only suitable when the backend and Ollama run on the same machine.
 
+
+### Configure the APK backend URL
+
+Before running the Android workflow, add a repository Actions variable:
+
+1. Open **Settings > Secrets and variables > Actions > Variables**.
+2. Choose **New repository variable**.
+3. Name it `VITE_API_BASE_URL`.
+4. Set its value to your deployed HTTPS backend URL, for example `https://your-kenshin-api.onrender.com` (use your actual Render service URL).
+5. Save, then run the Android APK workflow again.
+
+This URL is public configuration, not a secret. Do not put provider API keys in this variable.
+
 ## Android APK
 
 This repository includes Capacitor Android configuration and a GitHub Actions workflow at `.github/workflows/android-apk.yml`.
