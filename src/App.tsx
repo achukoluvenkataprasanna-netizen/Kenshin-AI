@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Activity, Bot, Gamepad2, Github, LoaderCircle, Send, ShieldCheck, Sparkles, Wifi, Mic, MicOff, Volume2, VolumeX, RotateCcw, Crown, Puzzle, BookOpen, KeyRound } from "lucide-react";
+import { Activity, Bot, Gamepad2, Github, LoaderCircle, Send, ShieldCheck, Sparkles, Wifi, Mic, MicOff, Volume2, VolumeX, RotateCcw, Crown, Puzzle } from "lucide-react";
 
 type Provider = "openrouter" | "ollama_cloud" | "ollama_local";
 type Message = { role: "assistant" | "user"; text: string };
