@@ -94,7 +94,7 @@ public class KenshinNativePlugin extends Plugin implements TextToSpeech.OnInitLi
         boolean result = service.performUserAction(action, call.getString("target", ""));
         call.resolve(new JSObject().put("performed", result).put("action", action));
     }
-    @Override protected void handleOnDestroy() {
+    @Override public void handleOnDestroy() {
         if (tts != null) { tts.stop(); tts.shutdown(); tts = null; }
         super.handleOnDestroy();
     }
