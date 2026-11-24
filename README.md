@@ -1,41 +1,65 @@
 # KENSHIN-AI
 
-A mobile-first personal AI assistant starter project.
+A mobile-first personal AI assistant, powered by Gemini through a private backend.
 
-> This repository is the foundation, not a finished AI assistant. The current UI is a frontend prototype; live AI, voice, chess, games, and external connectors are planned integrations.
+## What works in this version
+- Responsive React + TypeScript + Vite interface.
+- FastAPI backend with a Gemini chat endpoint.
+- Conversation context is sent with each chat request.
+- Health endpoint reports whether the backend has an AI key configured.
+- API keys are read only from backend environment variables; never commit secrets.
 
-## Current starter
-- Responsive React + TypeScript + Vite interface
-- Dark, mobile-first assistant dashboard
-- Chat prototype with clearly labeled demo responses
-- Feature roadmap for voice, chess, mini-games, and connectors
-- No API keys or secrets committed
+## Activate live AI
 
-## Run locally
-Requires Node.js 20 or newer.
+### 1. Get a Gemini API key
+Create a key in Google AI Studio: https://aistudio.google.com/app/apikey
+
+Keep the key private. Do not paste it into frontend code, GitHub files, or public chats.
+
+### 2. Run the backend locally
+Requires Python 3.11+.
+
+```bash
+cd backend
+python -m venv .venv
+# Windows: .venv\\Scripts\\activate
+# macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Set `GEMINI_API_KEY` in your shell or in a local `.env` file (the .gitignore excludes env files). Example:
+
+```bash
+GEMINI_API_KEY=your_private_key
+GEMINI_MODEL=gemini-2.5-flash
+FRONTEND_ORIGINS=http://localhost:5173
+uvicorn main:app --reload --port 8000
+```
+
+The health check is at http://localhost:8000/health.
+
+### 3. Run the frontend
+In a second terminal, from the repository root:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite.
+Vite proxies `/api` and `/health` to the local backend. Open the URL Vite prints.
 
-## Build
-```bash
-npm run build
-npm run preview
-```
+## Deploy the backend
+A Render blueprint is included in `render.yaml`. Create a new Render Web Service from this repository and set the secret environment variable `GEMINI_API_KEY` in Render's dashboard. Set `FRONTEND_ORIGINS` to the exact deployed frontend origin (no trailing slash). Set the frontend's `VITE_API_BASE_URL` to the backend URL and redeploy the frontend.
+
+Do not commit real keys. If a key is exposed, revoke it and create a new one.
 
 ## Roadmap
-1. Connect a real AI provider through a secure backend (never expose API keys in browser code).
-2. Add speech input/output with browser/device capability checks.
-3. Add chess and original mini-games.
-4. Add documented, authorized API integrations.
-5. Package the web app for Android with Capacitor after the core experience is stable.
+1. Add voice input and speech output.
+2. Add chess and original mini-games.
+3. Add official, user-authorized API connectors.
+4. Package the stable web app for Android with Capacitor.
 
-## Safety and integrations
-Connectors must use official APIs and user-authorized access. Roblox-related features must not exploit games, bypass anti-cheat, or automate unauthorized public-server activity.
+Roblox-related features must use documented, authorized interfaces and must not exploit games, bypass anti-cheat, or automate unauthorized public-server activity.
 
-## License
-No license has been selected yet. All rights remain with the repository owner until a license is added.
+## Current limitations
+The backend is a first AI integration, not an autonomous agent. It has no external tools, persistent memory, account connectors, or Android APK yet. Add production rate limiting, authentication, monitoring, and usage controls before opening the API to the public.
