@@ -22,6 +22,14 @@ let manifest = fs.readFileSync(manifestPath, "utf8");
 // AccessibilityService or broad installed-app visibility in this APK.
 manifest = manifest.replace(/\s*<queries>[\s\S]*?<\/queries>\s*/g, "\n");
 manifest = manifest.replace(/\s*<service[^>]*KenshinAccessibilityService[\s\S]*?<\/service>\s*/g, "\n");
+// Declare the native voice permissions and speech-recognition visibility required
+// by Android. Permission is requested at runtime by the Capacitor plugin.
+if (!manifest.includes("android.permission.RECORD_AUDIO")) {
+  manifest = manifest.replace("</manifest>", '  <uses-permission android:name="android.permission.RECORD_AUDIO" />\n</manifest>');
+}
+if (!manifest.includes("android.speech.RecognitionService")) {
+  manifest = manifest.replace("</manifest>", '  <queries>\n    <intent>\n      <action android:name="android.speech.RecognitionService" />\n    </intent>\n    <intent>\n      <action android:name="android.intent.action.TTS_SERVICE" />\n    </intent>\n  </queries>\n</manifest>');
+}
 fs.writeFileSync(manifestPath, manifest);
 
 const activityPath = path.join(javaDir, "MainActivity.java");
@@ -35,4 +43,4 @@ if (!fs.existsSync(activityPath)) {
     fs.writeFileSync(activityPath, activity);
   }
 }
-console.log("Installed Kenshin native voice bridge. Accessibility service intentionally omitted from safer sideload APK.");
+console.log("Installed Kenshin native voice bridge with microphone permission declaration. Screen control remains omitted from this safer APK.");
